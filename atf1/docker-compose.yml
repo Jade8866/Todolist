@@ -1,0 +1,34 @@
+version: '3.8'  # Specify the Docker Compose file version
+
+
+
+services:
+  windows-app:
+    image: your-windows-app-image  # Your Windows app Docker image
+    container_name: windows-app
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: YourRootPassword  # Updated password
+      MYSQL_DB: yourdb
+    ports:
+      - "8080:8080"  # Expose any port your Windows app needs
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-db
+    networks:
+      - app-network
+    environment:
+      MYSQL_ROOT_PASSWORD: YourRootPassword  # Updated password
+      MYSQL_DATABASE: yourdb
+    ports:
+      - "3306:3306"  # MySQL port
+
+networks:
+  app-network:
+    driver: bridge
